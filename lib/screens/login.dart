@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quizz_flutter_fbase/shared/shared.dart';
 import 'package:quizz_flutter_fbase/services/services.dart';
+import 'package:apple_sign_in/apple_sign_in.dart' as Apple;
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -51,6 +53,24 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.black45,
             loginMethod: auth.googleSignIn,
           ),
+          FutureBuilder<Object>(
+              future: auth.isAppleSignInAvailable,
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  return Apple.AppleSignInButton(
+                    style: Apple.ButtonStyle.black,
+                    onPressed: () async {
+                      FirebaseUser user = await auth.appleSignIn();
+
+                      if (user != null) {
+                        Navigator.pushReplacementNamed(context, '/topics');
+                      }
+                    },
+                  );
+                } else {
+                  return Container();
+                }
+              }),
           LoginButton(text: 'Continue as Guest', loginMethod: auth.anonLogin),
         ],
       ),
