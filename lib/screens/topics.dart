@@ -41,22 +41,10 @@ class TopicsScreen extends StatelessWidget {
         }
       },
     );
-
-    /*return Scaffold(
-      appBar: AppBar(
-        title: Text('Topics'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: Text('Different topics listed here'),
-      ),
-      bottomNavigationBar: AppBottomNav(),
-    );*/
   }
 }
 
 class TopicItem extends StatelessWidget {
-  
   final Topic topic;
   const TopicItem({Key key, this.topic}) : super(key: key);
 
@@ -68,22 +56,18 @@ class TopicItem extends StatelessWidget {
         child: Card(
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                  builder: (BuildContext context) => TopicScreen(topic: topic)
-                  ),
-                );
-            }
-            ,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        TopicScreen(topic: topic)),
+              );
+            },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'assets/cover/${topic.img}',
-                  fit: BoxFit.contain
-                ),
+                Image.asset('assets/covers/${topic.img}', fit: BoxFit.contain),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -93,8 +77,7 @@ class TopicItem extends StatelessWidget {
                         child: Text(
                           topic.title,
                           style: TextStyle(
-                            height: 1.5, fontWeight: FontWeight.bold
-                          ),
+                              height: 1.5, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.fade,
                           softWrap: false,
                         ),
@@ -107,13 +90,12 @@ class TopicItem extends StatelessWidget {
             ),
           ),
         ),
-        ),
+      ),
     );
   }
 }
 
 class TopicScreen extends StatelessWidget {
-  
   final Topic topic;
 
   TopicScreen({this.topic});
@@ -128,63 +110,58 @@ class TopicScreen extends StatelessWidget {
         children: [
           Hero(
             tag: topic.img,
-            child: 
-              Image.asset(
-                'assets/cover/${topic.img}',
-                  width: MediaQuery.of(context).size.width
-              ),
+            child: Image.asset('assets/covers/${topic.img}',
+                width: MediaQuery.of(context).size.width),
           ),
-          Text(
-            topic.title,
-            style: TextStyle(height: 2, fontSize: 20, fontWeight: FontWeight.bold),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              topic.title,
+              style: TextStyle(
+                  height: 2, fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            QuizList(topic: topic),
+          ),
+          QuizList(topic: topic),
         ],
       ),
     );
   }
 }
 
-
 class QuizList extends StatelessWidget {
-  
   final Topic topic;
   const QuizList({Key key, this.topic}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: topic.quizzes.map((quiz){
-        return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-          elevation: 4,
-          margin: EdgeInsets.all(4),
-          child: InkWell(
-            onTap:(){
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) => QuizScreen(quiz))
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.all(8),
-              child: ListTile(
-                title: Text(
-                  quiz.title,
-                  style: Theme.of(context).textTheme.headline6
-                  ),
-                subtitle: Text(
-                  quiz.description,
-                  overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                leading: QuizBadge(topic: topic, quizId: quiz.id),
-                  ),
+        children: topic.quizzes.map((quiz) {
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        elevation: 4,
+        margin: EdgeInsets.all(4),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    QuizScreen(quizId: quiz.id)));
+          },
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: ListTile(
+              title: Text(quiz.title,
+                  style: Theme.of(context).textTheme.headline6),
+              subtitle: Text(
+                quiz.description,
+                overflow: TextOverflow.fade,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
+              leading: QuizBadge(topic: topic, quizId: quiz.id),
             ),
-          );
-        
-      }).toList());
-    
+          ),
+        ),
+      );
+    }).toList());
   }
 }
 
@@ -207,7 +184,6 @@ class TopicDrawer extends StatelessWidget {
                   padding: EdgeInsets.only(top: 10, left: 10),
                   child: Text(
                     topic.title,
-                    // textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
