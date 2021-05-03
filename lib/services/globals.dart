@@ -10,4 +10,7 @@ class Global {
     Quiz: (data) => Quiz.fromMap(data),
     Report: (data) => Report.fromMap(data),
   };
+
+  static final Collection<Topic> topicsRef = Collection<Topic>(path: 'topics');
+  static final UserData<Report> reportRef = UserData<Report>(collection: 'reports');
 }
