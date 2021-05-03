@@ -23,6 +23,10 @@ class Document<T> {
         .snapshots()
         .map((snapshot) => Global.models[T](snapshot.data) as T);
   }
+
+  Future<void> upsert(Map data) {
+    return ref.setData(Map<String, dynamic>.from(data), merge: true);
+  }
 }
 
 class Collection<T> {
@@ -57,32 +61,30 @@ class UserData<T> {
   UserData({this.collection});
 
   Stream<T> documentStream() {
-
     return _auth.onAuthStateChanged.switchMap((user) {
-        if (user != null){
-
-          Document doc = Document<T>(path:'$collection/${user.uid}');
-          return doc.streamData();
-        } else {
-          return Stream<T>.value(null);
-        }
-
-
-
+      if (user != null) {
+        Document doc = Document<T>(path: '$collection/${user.uid}');
+        return doc.streamData();
+      } else {
+        return Stream<T>.value(null);
+      }
     });
   }
 
   Future<T> getDocument() async {
     FirebaseUser user = await _auth.currentUser();
 
-    if (user != null){
-      Document doc = Document<T>(path:'$collection/${user.uid}');
+    if (user != null) {
+      Document doc = Document<T>(path: '$collection/${user.uid}');
       return doc.getData();
     } else {
       return null;
     }
-
   }
- 
 
+  Future<void> upsert(Map data) async {
+    FirebaseUser user = await _auth.currentUser();
+    Document<T> ref = Document(path: '$collection/${user.uid}');
+    return ref.upsert(data);
+  }
 }
