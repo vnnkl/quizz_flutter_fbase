@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.quizz_flutter_fbase">
    <application
-        android:label="quizz_flutter_fbase"
-        android:icon="@mipmap/ic_launcher">
+        android:label="ProgammingQuizz"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
